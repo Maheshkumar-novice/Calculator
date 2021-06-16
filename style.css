@@ -1,0 +1,157 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&display=swap");
+
+/* 
+Project By Maheshkumar.
+
+Notice:
+==================
+BEM - Block, Element, Modifier Method for CSS Structure
+
+Block component
+.btn {}
+
+Element that depends upon the block 
+.btn__price {}
+
+Modifier that changes the style of the block
+.btn--orange {} 
+.btn--big {}
+==================
+*/
+
+/* || General Styles */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+:root {
+  --color: white;
+  --color-special: lime;
+  --color-general: orange;
+  --background-color: black;
+}
+html {
+  font-size: 62.5%;
+  background: url("./bg.jpg");
+  background-position: center;
+  background-size: cover;
+}
+body {
+  min-height: 100vh;
+}
+
+/* || Typography */
+html {
+  font-family: "Poppins", sans-serif;
+}
+.btn {
+  font-family: inherit;
+  font-size: 2rem;
+  color: var(--color);
+}
+.display__para.result {
+  font-size: 4rem;
+  font-weight: 500;
+}
+.calculator__display > * {
+  color: var(--color);
+  font-size: 3rem;
+  white-space: nowrap;
+}
+.display__para {
+  font-weight: 300;
+}
+
+/* || Base Layout */
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+/* || Blocks */
+.calculator {
+  background-color: var(--background-color);
+  width: clamp(270px, 90vw, 400px);
+  height: clamp(600px, 60vh, 650px);
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 1fr;
+  border-radius: 2.5rem;
+  position: relative;
+  box-shadow: 4px 4px 4px black, -4px 4px 4px black;
+  border: 2rem solid rgba(255, 255, 255, 0.1);
+}
+.btn {
+  height: 2.5em;
+  max-height: 3em;
+  outline: none;
+  flex: 1;
+  margin: 1%;
+  border: none;
+  border-radius: 1em;
+  background-color: rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  -webkit-tap-highlight-color: transparent;
+  box-shadow: 4px 4px 4px black;
+}
+
+/* || Elements - Children of Blocks */
+.calculator__operations {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  padding-bottom: 1.5rem;
+  background-color: rgba(255, 255, 255, 0.1);
+  gap: 1em;
+}
+.op__row {
+  flex: 1;
+  display: flex;
+}
+.calculator__display {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+.calculator__display > * {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  overflow-x: hidden;
+}
+.display__input {
+  border-top: 2px solid rgba(255, 255, 255, 0.1);
+}
+.display__para {
+  overflow-x: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* || Modifiers - Modify Blocks & Elements */
+.btn--op {
+  color: var(--color-general);
+}
+.btn--sp-op {
+  color: var(--color-special);
+}
+.btn--equal {
+  color: rgb(195, 39, 30);
+}
+
+/* || Design Elements */
+.btn:hover {
+  background-color: rgba(255, 255, 255, 0.4);
+}
+.display__para::-webkit-scrollbar {
+  display: none;
+}

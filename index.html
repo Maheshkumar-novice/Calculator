@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calculator | The Odin Project</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <main class="calculator">
+      <section class="calculator__display">
+        <section class="display__operation">
+          <p class="display__para">Cala Cula Eater</p>
+        </section>
+        <section class="display__input">
+          <p class="display__para">Do Some Math!</p>
+        </section>
+      </section>
+      <section class="calculator__operations">
+        <div class="op__row">
+          <button class="btn btn--sp-op btn--clear" data-operation="clear">
+            AC
+          </button>
+          <button class="btn btn--sp-op btn--sign" data-operation="sign">
+            +/-
+          </button>
+          <button
+            class="btn btn--sp-op btn--remainder"
+            data-operation="remainder"
+          >
+            %
+          </button>
+          <button class="btn btn--op btn--divide" data-operation="division">
+            /
+          </button>
+        </div>
+        <div class="op__row">
+          <button class="btn btn--num btn--7" data-num="7">7</button>
+          <button class="btn btn--num btn--8" data-num="8">8</button>
+          <button class="btn btn--num btn--9" data-num="9">9</button>
+          <button
+            class="btn btn--op btn--multiply"
+            data-operation="multiplication"
+          >
+            x
+          </button>
+        </div>
+        <div class="op__row">
+          <button class="btn btn--num btn--4" data-num="4">4</button>
+          <button class="btn btn--num btn--5" data-num="5">5</button>
+          <button class="btn btn--num btn--6" data-num="6">6</button>
+          <button
+            class="btn btn--op btn--subtract"
+            data-operation="subtraction"
+          >
+            -
+          </button>
+        </div>
+        <div class="op__row">
+          <button class="btn btn--num btn--1" data-num="1">1</button>
+          <button class="btn btn--num btn--2" data-num="2">2</button>
+          <button class="btn btn--num btn--3" data-num="3">3</button>
+          <button class="btn btn--op btn--add" data-operation="addition">
+            +
+          </button>
+        </div>
+        <div class="op__row">
+          <button class="btn btn--op btn--backspace" data-operation="backspace">
+            back
+          </button>
+          <button class="btn btn--num btn--0" data-num="0">0</button>
+          <button class="btn btn--op btn--dot" data-num=".">.</button>
+          <button class="btn btn--equal" data-operation="equal">
+            =
+          </button>
+        </div>
+      </section>
+    </main>
+    <script src="./script.js"></script>
+  </body>
+</html>
