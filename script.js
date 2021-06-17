@@ -1,8 +1,8 @@
 // Main-Operations
-const add = (a, b) => parseInt(a) + parseInt(a);
+const add = (a, b) => parseInt(a) + parseInt(b);
 const subtract = (a, b) => a - b;
-const multiply = (a, b) => a * b;
-const divide = (a, b) => Number((a / b).toFixed(10));
+const multiply = (a, b) => (a * b).toFixed(4);
+const divide = (a, b) => Number((a / b).toFixed(4));
 const remainder = (a, b) => a % b;
 const negate = (element) => {
   let text = element.textContent;
@@ -11,11 +11,9 @@ const negate = (element) => {
     !text.match(opRegex) ||
     (text.match(opRegex).length === 1 && text[0].match(/\-/gi))
   ) {
-    console.log(element.textContent);
     element.textContent = -element.textContent;
   } else if (text.match(opRegex).length >= 1) {
     let op = text.match(opRegex)[text.match(opRegex).length - 1];
-    console.log(text.slice(opIndex + 1));
     element.textContent =
       text.slice(0, opIndex) + text[opIndex] + -1 * text.slice(opIndex + 1);
   }
@@ -23,7 +21,7 @@ const negate = (element) => {
 
 // Sub-operations
 const clear = (element) => {
-  element.textContent = "";
+  element.innerHTML = "";
 };
 const backspace = (element) => {
   element.textContent = element.textContent.slice(0, -1);
@@ -32,10 +30,8 @@ const addDot = (element) => {
   let text = element.textContent;
   let opRegex = /[+\-\*\/%]/gi;
   if (text.match(opRegex)) {
-    textArray = text.split(`${text.match(opRegex)[0]}`);
-    textArray[0].includes(".") && textArray[1].includes(".")
-      ? ""
-      : (element.textContent += ".");
+    textArray = text.split(`${text[opIndex]}`);
+    textArray[1].includes(".") ? "" : (element.textContent += ".");
   } else {
     text.includes(".") ? "" : (element.textContent += ".");
   }
@@ -63,10 +59,13 @@ const operators = [...document.querySelectorAll(".btn--op, .btn--sp-op")];
 
 // Event Listeners
 numButtons.forEach((button) =>
-  button.addEventListener("click", (e) => validateKey(e.target.textContent))
+  button.addEventListener("click", (e) => {
+    validateKey(e.target.textContent);
+  })
 );
 operators.forEach((button) =>
   button.addEventListener("click", (e) => {
+    console.log(e);
     if (e.target.textContent.trim() === "+/-") {
       validateKey("~");
       return;
@@ -74,13 +73,10 @@ operators.forEach((button) =>
     validateKey(e.target.textContent.trim());
   })
 );
+
 window.addEventListener("keyup", (e) => {
   if (e.key.toLowerCase() === "backspace") {
     validateKey("<");
-    return;
-  }
-  if (e.key.toLowerCase() === "enter") {
-    evaluateExpression();
     return;
   }
   validateKey(e.key);
@@ -89,6 +85,8 @@ window.addEventListener("keyup", (e) => {
 // Functions
 function updateOperand(value) {
   current.textContent += value;
+  let textop = current.textContent;
+  console.log({ textop });
 }
 function updateOperator(value, trim) {
   let text = current.textContent;
@@ -116,13 +114,12 @@ function updateOperator(value, trim) {
       current.textContent = text.slice(0, -1);
       current.textContent += value;
       opIndex = current.textContent.length - 1;
-      // console.log(opIndex);
     }
   } else {
     current.textContent += value;
     opIndex = current.textContent.length - 1;
-    // console.log(opIndex);
   }
+  console.log(current.textContent);
 }
 
 function validateKey(value) {
@@ -140,7 +137,7 @@ function validateKey(value) {
     updateOperator(value, trim);
   } else if (value.match(/(<)/gi)) {
     operatorMap[value](current);
-  } else if (value.match(/(=)/gi)) {
+  } else if (value.match(/(=)|(enter)/gi)) {
     evaluateExpression();
   } else if (value.match(/(\.)/gi)) {
     operatorMap[value](current);
@@ -153,25 +150,24 @@ function validateKey(value) {
 }
 
 function evaluateExpression() {
+  let text = current.textContent;
+  console.log({ text, opIndex });
   if (
-    current.classList.contains("result") ||
+    !text ||
     !opIndex ||
-    opIndex === current.textContent.length - 1 ||
-    (current.textContent[opIndex + 1].match(/[\-]/gi) &&
-      current.textContent.length - 1 === current.textContent[opIndex + 1])
+    opIndex === text.length - 1 ||
+    !text[opIndex].match(/[+\-\*\/%]/gi)
   ) {
     console.log("Nah!");
     return;
   }
-  console.log(current.textContent);
-  text = current.textContent;
   let a = text.slice(0, opIndex);
-  let operator = text[opIndex];
+  let operatorEval = text[opIndex];
   let b = text.slice(opIndex + 1);
-  console.log(a, operator, b);
   operation.textContent = current.textContent;
-  current.textContent = operatorMap[operator](a, b);
+  current.textContent = operatorMap[operatorEval](a, b);
   current.classList.add("result");
+  opIndex = "";
 }
 
 // Value Holders for display
