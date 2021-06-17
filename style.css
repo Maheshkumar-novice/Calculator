@@ -84,7 +84,7 @@ body {
   border-radius: 2.5rem;
   position: relative;
   box-shadow: 4px 4px 4px black, -4px 4px 4px black;
-  border: 2rem solid rgba(255, 255, 255, 0.1);
+  border: 20px solid rgba(255, 255, 255, 0.1);
 }
 .btn {
   height: 2.5em;
@@ -143,9 +143,6 @@ body {
 }
 .btn--sp-op {
   color: var(--color-special);
-}
-.btn--equal {
-  color: rgb(195, 39, 30);
 }
 
 /* || Design Elements */
