@@ -116,8 +116,10 @@ function updateOperator(value, trim) {
       opIndex = current.textContent.length - 1;
     }
   } else {
-    current.textContent += value;
-    opIndex = current.textContent.length - 1;
+    if (!opIndex) {
+      current.textContent += value;
+      opIndex = current.textContent.length - 1;
+    }
   }
   console.log(current.textContent);
 }
