@@ -133,7 +133,6 @@ function updateOperator(value, trim) {
     }
   }
   scrollAdjust();
-  // console.log(current.textContent);
 }
 
 function validateKey(value) {
@@ -199,8 +198,5 @@ function scrollAdjust(afterResult = false) {
   let offsetTop = current.offsetTop;
   let offsetLeft = current.offsetLeft;
   let scroll = current.scrollWidth;
-  // if (scroll > width + 1 && afterResult) {
-  //   current.textContent = toExp(current.textContent);
-  // }
   current.scrollLeft = scroll - width;
 }
