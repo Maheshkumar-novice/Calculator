@@ -168,7 +168,7 @@ function validateKey(value) {
 
 function evaluateExpression() {
   let text = current.textContent;
-  if (!opIndex || !text[opIndex].match(opRegex)) {
+  if (opIndex >= text.length || !opIndex || !text[opIndex].match(opRegex)) {
     console.log("Nah!");
     opIndex = "";
     return;
