@@ -104,11 +104,9 @@ function updateOperand(value) {
 }
 
 function updateOperator(value, trim) {
-  // console.log(opIndex);
+  console.log(opIndex);
   let text = current.textContent;
-  if (
-    opIndex >= current.textContent.length
-  ) {
+  if (opIndex >= current.textContent.length) {
     opIndex = "";
   }
   if (text.length === 0) {
@@ -184,6 +182,7 @@ function evaluateExpression() {
   ) {
     console.log("Nah!");
     opIndex = "";
+    current.textContent = current.textContent.slice(0, -1);
     // console.log({ opIndex, text });
     return;
   }
