@@ -11,14 +11,12 @@ const remainder = (a, b) => a % b;
 
 const negate = (element) => {
   let text = element.textContent;
-  // let opRegex = /[+\-\*\/%]/gi;
   if (
     !text.match(opRegex) ||
     (text.match(opRegex).length === 1 && text[0].match(/\-/gi))
   ) {
     element.textContent = -element.textContent;
   } else if (text.match(opRegex).length >= 1) {
-    // let op = text.match(opRegex)[text.match(opRegex).length - 1];
     element.textContent =
       text.slice(0, opIndex) + text[opIndex] + -1 * text.slice(opIndex + 1);
   }
@@ -26,7 +24,6 @@ const negate = (element) => {
 
 const addDot = (element) => {
   let text = element.textContent;
-  // let opRegex = /[+\-\*\/%]/gi;
   if (text.match(opRegex)) {
     textArray = text.split(`${text[opIndex]}`);
     textArray[1].includes(".") ? "" : (element.textContent += ".");
@@ -62,6 +59,7 @@ const operatorMap = {
 
 // Elements Selection for Event Listeners & Variables
 // Value Holders for display
+let calculator = document.querySelector(".calculator");
 let operation = document.querySelector(".display__operation p");
 let current = document.querySelector(".display__input p");
 let opIndex = ""; // Operator Index
@@ -70,6 +68,9 @@ const numButtons = [...document.querySelectorAll(".btn--num")];
 const operators = [...document.querySelectorAll(".btn--op, .btn--sp-op")];
 
 // Event Listeners
+calculator.addEventListener("touchmove", (e) => {
+  e.preventDefault();
+});
 numButtons.forEach((button) =>
   button.addEventListener("click", (e) => {
     validateKey(e.target.textContent);
@@ -95,10 +96,9 @@ window.addEventListener("keyup", (e) => {
 // Functions
 function updateOperand(value) {
   current.textContent += value;
-  // let textop = current.textContent;
-  // console.log({ textop });
   scrollAdjust();
 }
+
 function updateOperator(value, trim) {
   let text = current.textContent;
   if (text.length === 0) {
@@ -199,10 +199,8 @@ function scrollAdjust(afterResult = false) {
   let offsetTop = current.offsetTop;
   let offsetLeft = current.offsetLeft;
   let scroll = current.scrollWidth;
-  console.table({ width, height, offsetTop, offsetLeft, scroll });
-  if (scroll > width + 1 && afterResult) {
-    current.textContent = toExp(current.textContent);
-  }
-  current.scrollIntoView();
+  // if (scroll > width + 1 && afterResult) {
+  //   current.textContent = toExp(current.textContent);
+  // }
   current.scrollLeft = scroll - width;
 }

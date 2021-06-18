@@ -156,3 +156,16 @@ body {
 .display__para::-webkit-scrollbar {
   display: none;
 }
+.extra {
+  position: absolute;
+  /* bottom: 0; */
+  top: 100vh;
+  transform: translateY(-120%);
+  font-size: 2rem;
+  color: white;
+  font-weight: normal;
+}
+.extra__link {
+  color: inherit;
+  text-decoration: inherit;
+}
