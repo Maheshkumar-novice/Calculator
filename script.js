@@ -1,44 +1,51 @@
 // Main-Operations
-const add = (a, b) => parseInt(a) + parseInt(b);
-const subtract = (a, b) => a - b;
-const multiply = (a, b) => (a * b).toFixed(4);
-const divide = (a, b) => Number((a / b).toFixed(4));
+const add = (a, b) => (parseFloat(a) + parseFloat(b)).toFixed(2);
+
+const subtract = (a, b) => (a - b).toFixed(3);
+
+const multiply = (a, b) => (a * b).toFixed(3);
+
+const divide = (a, b) => (a / b).toFixed(3);
+
 const remainder = (a, b) => a % b;
+
 const negate = (element) => {
   let text = element.textContent;
-  let opRegex = /[+\-\*\/%]/gi;
+  // let opRegex = /[+\-\*\/%]/gi;
   if (
     !text.match(opRegex) ||
     (text.match(opRegex).length === 1 && text[0].match(/\-/gi))
   ) {
     element.textContent = -element.textContent;
   } else if (text.match(opRegex).length >= 1) {
-    let op = text.match(opRegex)[text.match(opRegex).length - 1];
+    // let op = text.match(opRegex)[text.match(opRegex).length - 1];
     element.textContent =
       text.slice(0, opIndex) + text[opIndex] + -1 * text.slice(opIndex + 1);
   }
 };
 
-// Sub-operations
-const clear = (element) => {
-  element.innerHTML = "";
-};
-const backspace = (element) => {
-  element.textContent = element.textContent.slice(0, -1);
-};
 const addDot = (element) => {
   let text = element.textContent;
-  let opRegex = /[+\-\*\/%]/gi;
+  // let opRegex = /[+\-\*\/%]/gi;
   if (text.match(opRegex)) {
     textArray = text.split(`${text[opIndex]}`);
     textArray[1].includes(".") ? "" : (element.textContent += ".");
   } else {
     text.includes(".") ? "" : (element.textContent += ".");
   }
+  scrollAdjust();
 };
 
-// Util-Operations
-const toExp = (value) => Number(value).toExponential();
+// Sub-operations
+const clear = (element) => {
+  element.innerHTML = "";
+};
+
+const backspace = (element) => {
+  element.textContent = element.textContent.slice(0, -1);
+};
+
+const toExp = (value) => Number(value).toExponential(3);
 
 // Operator Map
 const operatorMap = {
@@ -53,7 +60,12 @@ const operatorMap = {
   ".": addDot,
 };
 
-// Elements Selection for Event Listeners
+// Elements Selection for Event Listeners & Variables
+// Value Holders for display
+let operation = document.querySelector(".display__operation p");
+let current = document.querySelector(".display__input p");
+let opIndex = ""; // Operator Index
+let opRegex = /[+\-\*\/%]/gi; // Operator RegExp
 const numButtons = [...document.querySelectorAll(".btn--num")];
 const operators = [...document.querySelectorAll(".btn--op, .btn--sp-op")];
 
@@ -65,7 +77,6 @@ numButtons.forEach((button) =>
 );
 operators.forEach((button) =>
   button.addEventListener("click", (e) => {
-    console.log(e);
     if (e.target.textContent.trim() === "+/-") {
       validateKey("~");
       return;
@@ -73,7 +84,6 @@ operators.forEach((button) =>
     validateKey(e.target.textContent.trim());
   })
 );
-
 window.addEventListener("keyup", (e) => {
   if (e.key.toLowerCase() === "backspace") {
     validateKey("<");
@@ -85,8 +95,9 @@ window.addEventListener("keyup", (e) => {
 // Functions
 function updateOperand(value) {
   current.textContent += value;
-  let textop = current.textContent;
-  console.log({ textop });
+  // let textop = current.textContent;
+  // console.log({ textop });
+  scrollAdjust();
 }
 function updateOperator(value, trim) {
   let text = current.textContent;
@@ -96,7 +107,7 @@ function updateOperator(value, trim) {
     } else {
       current.textContent += "";
     }
-  } else if (text[text.length - 1].match(/[+\-\*\/%]/gi)) {
+  } else if (text[text.length - 1].match(opRegex)) {
     if (
       value === "-" &&
       ![text[text.length - 1], text[text.length - 2]]
@@ -108,8 +119,8 @@ function updateOperator(value, trim) {
       return;
     } else if (
       text.length > 2 &&
-      text[text.length - 1].match(/[+\-\*\/%]/gi) &&
-      !text[text.length - 2].match(/[+\-\*\/%]/gi)
+      text[text.length - 1].match(opRegex) &&
+      !text[text.length - 2].match(opRegex)
     ) {
       current.textContent = text.slice(0, -1);
       current.textContent += value;
@@ -121,18 +132,19 @@ function updateOperator(value, trim) {
       opIndex = current.textContent.length - 1;
     }
   }
-  console.log(current.textContent);
+  scrollAdjust();
+  // console.log(current.textContent);
 }
 
 function validateKey(value) {
   current.classList.remove("result");
   if (value.match(/^[0-9]$/gi)) {
     updateOperand(value);
-  } else if (value.match(/[\+\-\/\*%]/gi)) {
+  } else if (value.match(opRegex)) {
     let trim = false;
     if (
       current.textContent.length &&
-      current.textContent[current.textContent.length - 1].match(/[+\-\*\/%]/gi)
+      current.textContent[current.textContent.length - 1].match(opRegex)
     ) {
       trim = true;
     }
@@ -154,13 +166,20 @@ function validateKey(value) {
 function evaluateExpression() {
   let text = current.textContent;
   console.log({ text, opIndex });
-  if (
-    !text ||
-    !opIndex ||
-    opIndex === text.length - 1 ||
-    !text[opIndex].match(/[+\-\*\/%]/gi)
-  ) {
+  if (!opIndex || !text[opIndex].match(opRegex)) {
+    console.log(text);
     console.log("Nah!");
+    opIndex = "";
+    return;
+  }
+  if (
+    text.length <= 1 ||
+    opIndex === text.length - 1 ||
+    [text[text.length - 1], text[text.length - 2]]
+      .join("")
+      .match(/[+\-\*\/%][+\-\*\/%]/gi)
+  ) {
+    console.log("Nah!!!");
     return;
   }
   let a = text.slice(0, opIndex);
@@ -170,9 +189,20 @@ function evaluateExpression() {
   current.textContent = operatorMap[operatorEval](a, b);
   current.classList.add("result");
   opIndex = "";
+  scrollAdjust(true);
 }
 
-// Value Holders for display
-let operation = document.querySelector(".display__operation p");
-let current = document.querySelector(".display__input p");
-let opIndex = "";
+function scrollAdjust(afterResult = false) {
+  let rect = current.getBoundingClientRect();
+  let width = rect.width;
+  let height = rect.height;
+  let offsetTop = current.offsetTop;
+  let offsetLeft = current.offsetLeft;
+  let scroll = current.scrollWidth;
+  console.table({ width, height, offsetTop, offsetLeft, scroll });
+  if (scroll > width + 1 && afterResult) {
+    current.textContent = toExp(current.textContent);
+  }
+  current.scrollIntoView();
+  current.scrollLeft = scroll - width;
+}
