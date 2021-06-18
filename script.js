@@ -104,7 +104,13 @@ function updateOperand(value) {
 }
 
 function updateOperator(value, trim) {
+  // console.log(opIndex);
   let text = current.textContent;
+  if (
+    opIndex >= current.textContent.length
+  ) {
+    opIndex = "";
+  }
   if (text.length === 0) {
     if (value == "-") {
       current.textContent += value;
@@ -168,14 +174,21 @@ function validateKey(value) {
 
 function evaluateExpression() {
   let text = current.textContent;
-  if (opIndex >= text.length || !opIndex || !text[opIndex].match(opRegex)) {
+  // console.log({ opIndex, text });
+  if (
+    opIndex >= text.length ||
+    opIndex === text.length - 1 ||
+    !opIndex ||
+    !text[opIndex] ||
+    !text[opIndex].match(opRegex)
+  ) {
     console.log("Nah!");
     opIndex = "";
+    // console.log({ opIndex, text });
     return;
   }
   if (
     text.length <= 1 ||
-    opIndex === text.length - 1 ||
     [text[text.length - 1], text[text.length - 2]]
       .join("")
       .match(/[+\-\*\/%][+\-\*\/%]/gi)
