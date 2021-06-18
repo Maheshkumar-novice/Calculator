@@ -90,6 +90,10 @@ window.addEventListener("keyup", (e) => {
     validateKey("<");
     return;
   }
+  if (e.key.toLowerCase() === "delete") {
+    validateKey("AC");
+    return;
+  }
   validateKey(e.key);
 });
 
@@ -164,9 +168,7 @@ function validateKey(value) {
 
 function evaluateExpression() {
   let text = current.textContent;
-  console.log({ text, opIndex });
   if (!opIndex || !text[opIndex].match(opRegex)) {
-    console.log(text);
     console.log("Nah!");
     opIndex = "";
     return;
@@ -200,3 +202,16 @@ function scrollAdjust(afterResult = false) {
   let scroll = current.scrollWidth;
   current.scrollLeft = scroll - width;
 }
+
+// Keyboard Shortcuts:
+console.log(`Keyboard Shortcuts:
+
+numKey [0-9] - To Enter Number
+
+Operators [+  -  *  /  %  ~(negate)  .(dot)] - To Enter Operators
+
+[Delete(All Clear)  Backspace] - Additional Operations
+
+[Enter] - Validates the Current Expression
+
+`);

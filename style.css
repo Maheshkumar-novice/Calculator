@@ -159,7 +159,6 @@ body {
 }
 .extra {
   position: absolute;
-  /* bottom: 0; */
   top: 100vh;
   transform: translateY(-120%);
   font-size: 2rem;
@@ -169,4 +168,7 @@ body {
 .extra__link {
   color: inherit;
   text-decoration: inherit;
+}
+.extra__text {
+  font-size: 1rem;
 }
